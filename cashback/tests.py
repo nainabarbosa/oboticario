@@ -28,10 +28,7 @@ class BaseViewTest(APITestCase):
 
     def login_a_user(self, username="", password=""):
         url = reverse(
-            "auth-login",
-            kwargs={
-                "version": "v1"
-            }
+            "login",
         )
         return self.client.post(
             url,

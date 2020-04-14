@@ -101,6 +101,8 @@ class LoginView(generics.CreateAPIView):
     POST auth/login/
     """
 
+    name = 'login'
+
     permission_classes = (permissions.AllowAny,)
 
     queryset = User.objects.all()
