@@ -116,10 +116,10 @@ class ComprasView(generics.GenericAPIView):
         cashback = self.get_cashback(valor_compra)
         percent_cashback = cashback.get('percent')
         valor_cashback = cashback.get('cashback')
-        status_compra = 2
+        status_compra = 1
 
-        if cpf != 15350946056:
-            status_compra = 1
+        if cpf == 15350946056:
+            status_compra = 2
 
         compra = Compras.objects.create(
             revendedor_id = self.revendedor_id,
