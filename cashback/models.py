@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+STATUS = (
+    (1, 'EM VALIDACAO'),
+    (2, 'APROVADO'),
+    (3, 'REPROVADO')
+)
+
 
 class Revendedor(models.Model):
     usuario = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
@@ -16,7 +22,7 @@ class Compras(models.Model):
     codigo_compra = models.IntegerField(null=False, blank=False)
     valor = models.DecimalField(decimal_places=2, max_digits=10)
     data_compra = models.DateTimeField(null=True, blank=True)
-    status = models.IntegerField(default=1, null=False, blank=False)
+    status = models.IntegerField(choices=STATUS, default=1)
     percent_cashback = models.DecimalField(decimal_places=2, max_digits=10)
     valor_cashback = models.DecimalField(decimal_places=2, max_digits=10)
 

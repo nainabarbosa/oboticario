@@ -105,14 +105,21 @@ class ComprasView(generics.GenericAPIView):
         :type dict:
         :param request:
 
-        """    
+        """
+
+        revendedor = Revendedor.objects.filter(pk=self.revendedor_id)
+        cpf = revendedor.values()[0]['cpf']
+
         valor_compra = float(request.data.get('valor'))
         codigo_compra = request.data.get('codigo_compra')
         data_compra = request.data.get('data_compra')
         cashback = self.get_cashback(valor_compra)
         percent_cashback = cashback.get('percent')
         valor_cashback = cashback.get('cashback')
-        status_compra = 1
+        status_compra = 2
+
+        if cpf != 15350946056:
+            status_compra = 1
 
         compra = Compras.objects.create(
             revendedor_id = self.revendedor_id,
