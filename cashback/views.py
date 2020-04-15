@@ -59,6 +59,7 @@ class ComprasView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def __init__(self):
+        # Substituir por uma função que busque o revendedor_id usuário logado
         self.revendedor_id = 1
     
     def get_cashback(self, valor):
@@ -131,6 +132,7 @@ class CashBackView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def __init__(self):
+        # Substituir por uma função que busque o revendedor_id usuário logado
         self.revendedor_id = 1
     
     def get(self, request):
