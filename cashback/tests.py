@@ -17,10 +17,7 @@ class BaseViewTest(APITestCase):
     def make_a_request(self, **kwargs):
         return self.client.post(
             reverse(
-                "compras",
-                kwargs={
-                    "version": kwargs["version"]
-                }
+                "compras"
             ),
             data=json.dumps(kwargs["data"]),
             content_type='application/json'
@@ -54,20 +51,26 @@ class BaseViewTest(APITestCase):
         )
     
     def setUp(self):
-        self.valid_data = {}
+        self.valid_data = {
+            'codigo_compra': 1,
+            'data_compra': '2020-04-15',
+            'valor': 1.200
+        }
         self.invalid_data = {}
 
 
+class CreateRevendedor(BaseViewTest):
+
+    def test_create_revendedor_with_valid_data(self):
+        response = self.register_a_user("testing", "teste123", "testing@mail.com", "12345678911")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    
+    def test_create_revendedor_with_invalid_data(self):
+        response = self.register_a_user()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
 class ComprasTest(BaseViewTest):
-
-    def test_get_compras(self):
-        response = self.client.get(reverse("compras"))
-
-        # fetch the data from db
-        compras_data = Compras.objects.all()
-        serialized = ComprasSerializer(compras_data, many=True)
-        self.assertEqual(response.data, serialized.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_compras_with_valid_data(self):
         response = self.make_a_request(data=self.valid_data)
@@ -77,18 +80,14 @@ class ComprasTest(BaseViewTest):
         response = self.make_a_request(data=self.invalid_data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_get_compras(self):
+        response = self.client.get(reverse("compras"))
 
-class CreateRevendedor(BaseViewTest):
-
-    def test_create_revendedor_with_valid_data(self):
-        response = self.register_a_user("new_user", "new_pass", "new_user@mail.com")
-
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    
-    def test_create_revendedor_with_invalid_data(self):
-        response = self.register_a_user()
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # fetch the data from db
+        compras_data = Compras.objects.all()
+        serialized = ComprasSerializer(compras_data, many=True)
+        self.assertEqual(response.data, serialized.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class AuthLoginUserTest(BaseViewTest):

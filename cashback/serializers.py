@@ -6,14 +6,21 @@ from .models import Revendedor, Compras
 
 class RevendedorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Trip
+        model = Revendedor
         fields = '__all__'
 
 
 class ComprasSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Trip
+        model = Compras
         fields = '__all__'
+
+
+class TokenSerializer(serializers.Serializer):
+    """
+    This serializer serializes the token data
+    """
+    token = serializers.CharField(max_length=255)
 
 
 class UserSerializer(serializers.ModelSerializer):
