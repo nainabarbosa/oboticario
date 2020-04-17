@@ -1,4 +1,4 @@
-import requests
+import requests, logging
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -16,6 +16,9 @@ from .serializers import RevendedorSerializer, ComprasSerializer, UserSerializer
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+# Set login file
+logging.basicConfig(filename='oboticario.log',level=logging.INFO)
 
 
 class RevendedorView(generics.GenericAPIView):
@@ -48,6 +51,7 @@ class RevendedorView(generics.GenericAPIView):
             username=username, password=password, email=email
         )
         novo_revendedor = Revendedor.objects.create(usuario_id = novo_usuario.id, cpf=cpf)
+        logging.info('Revendedor cadastrado com sucesso!')
         return Response(
             data=RevendedorSerializer(novo_revendedor).data,
             status=status.HTTP_201_CREATED
@@ -131,6 +135,7 @@ class ComprasView(generics.GenericAPIView):
             status=status_compra
 
         )
+        logging.info('Compra cadastrada com sucesso!')
         return Response(data=compra.id, status=status.HTTP_201_CREATED)
 
 
@@ -183,5 +188,6 @@ class LoginView(generics.GenericAPIView):
                     jwt_payload_handler(user)
                 )})
             serializer.is_valid()
+            logging.info('Usuário {} logado!'.format(username))
             return Response(serializer.data)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
