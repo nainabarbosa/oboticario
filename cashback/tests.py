@@ -97,8 +97,6 @@ class CashBackTest(BaseViewTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-
-
 class AuthLoginUserTest(BaseViewTest):
 
     def test_login_user_with_valid_credentials(self):
