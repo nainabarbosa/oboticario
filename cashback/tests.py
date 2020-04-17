@@ -90,6 +90,15 @@ class ComprasTest(BaseViewTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
+class CashBackTest(BaseViewTest):
+
+    def test_get_cashback(self):
+        response = self.client.get(reverse("acumulado_cashback"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+
+
 class AuthLoginUserTest(BaseViewTest):
 
     def test_login_user_with_valid_credentials(self):
